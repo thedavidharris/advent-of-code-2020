@@ -2,5 +2,4 @@
 import itertools
 import math
 
-with open('input.txt', 'r') as f:
-    print(math.prod(next(i for i in itertools.combinations(list(map(int, f.read().splitlines())), 2) if sum(i) == 2020)))
+print(math.prod(next(i for i in itertools.combinations(list(map(int, open('input.txt', 'r').read().splitlines())), 2) if sum(i) == 2020)))
