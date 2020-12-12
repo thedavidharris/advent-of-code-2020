@@ -1,40 +1,29 @@
 #!/usr/bin/env python3
-from math import sin, cos, radians
-
 with open("input.txt") as f:
-    input = f.read().splitlines()
+    input = [(x[0], int(x[1:])) for x in f.read().splitlines()]
 
-waypoint = (10,1)
-ship_point = (0,0)
+# x-axis is real number component, y is imaginary
+directions = {
+    "N": 0+1j,
+    "S": 0-1j,
+    "E": 1+0j,
+    "W": -1+0j
+}
 
-for line in input:
-    direction = line[0]
-    magnitude = int(line[1:])
+rotations = {
+    "L": 0+1j,
+    "R": 0-1j
+}
 
-    if direction == "F":
-        net_move = (waypoint[0] * magnitude, waypoint[1] * magnitude)
-        ship_point = (ship_point[0] + net_move[0], ship_point[1] + net_move[1])
-        print(line + " | " + "Moved ship " + str(net_move) + " to " + str(ship_point))
+ship = 0+0j
+waypoint = 10+1j
 
-    if direction in "NSEW":
-        oldWaypoint = waypoint
-        if direction == "N":
-            waypoint = (waypoint[0], waypoint[1] + magnitude)
-        if direction == "S":
-            waypoint = (waypoint[0], waypoint[1] - magnitude)
-        if direction == "E":
-            waypoint = (waypoint[0] + magnitude, waypoint[1])
-        if direction == "W":
-            waypoint = (waypoint[0] - magnitude, waypoint[1])
-        print(line + " | " + "Moved waypoint from " + str(oldWaypoint) + " to " + str(waypoint))
+for op, magnitude in input:
+    if op in "LR":
+        waypoint *= (rotations[op] ** (magnitude / 90))
+    if op in "NSEW":
+        waypoint += magnitude * directions[op]
+    if op == "F":
+        ship += magnitude * waypoint
 
-    if direction in "LR":
-        angle = radians((magnitude % 360))
-        if direction == "R":
-            angle *= -1
-        x = round(cos(angle)*waypoint[0] - sin(angle)*waypoint[1])
-        y = round(sin(angle)*waypoint[0] + cos(angle)*waypoint[1])
-        print(line + " | " + "Rotated waypoint from " + str(waypoint) + " to " + str((int(x),int(y))))
-        waypoint = (int(x),int(y))
-
-print(abs(ship_point[0]) + abs(ship_point[1]))
+print(int(abs(ship.real) + abs(ship.imag)))

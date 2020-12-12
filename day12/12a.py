@@ -1,54 +1,29 @@
 #!/usr/bin/env python3
 with open("input.txt") as f:
-    input = f.read().splitlines()
+    input = [(x[0], int(x[1:])) for x in f.read().splitlines()]
 
+# x-axis is real number component, y is imaginary
+directions = {
+    "N": 0+1j,
+    "S": 0-1j,
+    "E": 1+0j,
+    "W": -1+0j
+}
 
-net_ns = 0
-net_ew = 0
+rotations = {
+    "L": 0+1j,
+    "R": 0-1j
+}
 
-direction_to_degrees = {"N": 0,
-                        "E": 90,
-                        "S": 180,
-                        "W": 270}
+ship = 0+0j
+direction = 1+0j
 
-degrees_to_direction = {0: "N",
-                        90: "E",
-                        180: "S",
-                        270: "W"}
+for op, magnitude in input:
+    if op in "LR":
+        direction *= (rotations[op] ** (magnitude / 90))
+    if op in "NSEW":
+        ship += magnitude * directions[op]
+    if op == "F":
+        ship += magnitude * direction
 
-face_direction = "E"
-face_degrees = direction_to_degrees[face_direction]
-
-for line in input:
-    direction = line[0]
-    magnitude = int(line[1:])
-
-    if direction == "L":
-        face_degrees = (face_degrees - magnitude) % 360
-        print("Rotated " + str(magnitude) + " to now face " + degrees_to_direction[face_degrees])
-        continue
-    elif direction == "R":
-        face_degrees = (face_degrees + magnitude) % 360
-        print("Rotated " + str(magnitude) + " to now face " + degrees_to_direction[face_degrees])
-        continue
-    elif direction == "F":
-        current_direction = degrees_to_direction[face_degrees]
-    else:
-        current_direction = direction
-    
-    if current_direction == "N":
-        print("Moving " + str(magnitude) + " units " + current_direction)
-        net_ns += magnitude
-    if current_direction == "S":
-        print("Moving " + str(magnitude) + " units " + current_direction)
-        net_ns -= magnitude
-    if current_direction == "E":
-        print("Moving " + str(magnitude) + " units " + current_direction)
-        net_ew += magnitude
-    if current_direction == "W":
-        print("Moving " + str(magnitude) + " units " + current_direction)
-        net_ew -= magnitude
-
-    print(net_ew, net_ns)
-
-print(abs(net_ns)+abs(net_ew))
+print(int(abs(ship.real) + abs(ship.imag)))
