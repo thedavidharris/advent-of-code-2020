@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env pypy3
 import itertools
 import collections
 
@@ -19,7 +19,7 @@ for rule in rules_section.splitlines():
     subrules = rule.split(" or" )
     x1, y1 = [int(x) for x in subrules[0].split("-")]
     x2, y2 = [int(x) for x in subrules[1].split("-")]
-    rules[name] = list(itertools.chain(range(x1,y1+1), range(x2,y2+2)))
+    rules[name] = set(itertools.chain(range(x1,y1+1), range(x2,y2+2)))
 
 ticket_section = sections[2].splitlines()[1:]
 valid_tickets = []
@@ -27,7 +27,7 @@ valid_tickets = []
 # Part 1
 invalid_values = []
 
-total_range = list(itertools.chain(*rules.values()))
+total_range = set(itertools.chain(*rules.values()))
 tickets = [[int(y) for y in ticket_line.split(",")] for ticket_line in ticket_section]
 
 for ticket in tickets:
