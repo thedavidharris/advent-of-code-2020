@@ -30,8 +30,8 @@ for rule_input in rules_input.splitlines():
     num, definition = rule_input.split(": ")
     rules[num] = definition
 
-    # rules["8"] = "42 | 42 8"
-    # rules["11"] = "42 31 | 42 11 31"
+    rules["8"] = "42 | 42 8"
+    rules["11"] = "42 31 | 42 11 31"
 
 regex = re.compile(build_regex("0", 0))
 

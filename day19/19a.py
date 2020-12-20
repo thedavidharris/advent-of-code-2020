@@ -1,14 +1,9 @@
 #!/usr/bin/env python3
 import re
 
-
-MAX_DEPTH = 14
 rules = {}
 
 def build_regex(rule_num, depth):
-    if depth > MAX_DEPTH:
-        return "" 
-
     if rules[rule_num].startswith('"'):
         return rules[rule_num].replace('"', '')
 
