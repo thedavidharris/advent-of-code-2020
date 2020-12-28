@@ -72,7 +72,7 @@ for part in input:
 
 num_tiles = len(tile_input)
 
-print("Input has " + str(num_tiles) + " tiles")
+print(f"Input has {num_tiles} tiles")
 
 edge_counter = Counter()
 for tile in tile_input:
@@ -80,7 +80,7 @@ for tile in tile_input:
         edge_counter[edge] += 1
     for edge in tile.flipped_edges():
         edge_counter[edge] += 1
-print("Found " + str(len(edge_counter)) + " unique edges")
+print(f"Found {len(edge_counter)} unique edges")
 
 corners = []
 for tile in tile_input:
@@ -99,7 +99,7 @@ for func in orientation_functions:
     if edge_counter[top_left.left()] == 1 and edge_counter[top_left.top()] == 1:
         break
 
-print("Top left tile is " + str(top_left.id))
+print(f"Top left tile is {top_left.id}")
 
 tile_image_matrix = [[top_left]]
 
